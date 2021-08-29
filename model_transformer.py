@@ -71,45 +71,45 @@ class Discriminator(tf.keras.Model):
         dis_input = img#layers.Input(shape=(64, 64, 3))
         #print('dis_input shape:',dis_input.shape)
     
-        merge = tf.concat([dis_input, li],axis=-1) #layers.Concatenate()([dis_input, li])
+        merge = tf.concat([dis_input, li],axis=-1) 
         #print("Merge shape:",merge.shape)
-        discriminator = self.conv1(merge)#layers.Conv2D(filters=64, kernel_size=(3, 3), padding="same")(merge)
-        discriminator = self.leakyRelu(discriminator)#layers.LeakyReLU(0.2)(discriminator)
-        discriminator = self.gaussian_noise(discriminator)#layers.GaussianNoise(0.2)(discriminator)
+        discriminator = self.conv1(merge)
+        discriminator = self.leakyRelu(discriminator)
+        discriminator = self.gaussian_noise(discriminator)
         
-        discriminator = self.conv2(discriminator)#layers.Conv2D(filters=64, kernel_size=(3, 3), strides=(2, 2), padding="same")(discriminator)
+        discriminator = self.conv2(discriminator)
         #print("Discrim shape",discriminator.shape)
-        discriminator = self.batch_norm(discriminator)#layers.BatchNormalization(momentum=0.5)(discriminator)
-        discriminator = self.leakyRelu(discriminator)#layers.LeakyReLU()(discriminator)
+        discriminator = self.batch_norm(discriminator)
+        discriminator = self.leakyRelu(discriminator)
     
-        discriminator = self.conv3(discriminator)#layers.Conv2D(filters=128, kernel_size=(3, 3), padding="same")(discriminator)
+        discriminator = self.conv3(discriminator)
         #print("Discrim shape 2",discriminator.shape)
-        discriminator = self.batch_norm(discriminator)#layers.BatchNormalization(momentum=0.5)(discriminator)
-        discriminator = self.leakyRelu(discriminator)#layers.LeakyReLU(0.2)(discriminator)
+        discriminator = self.batch_norm(discriminator)
+        discriminator = self.leakyRelu(discriminator)
     
-        discriminator = self.conv4(discriminator)#layers.Conv2D(filters=128, kernel_size=(3, 3), strides=(2, 2), padding="same")(discriminator)
-        discriminator = self.batch_norm(discriminator)#layers.BatchNormalization(momentum=0.5)(discriminator)
-        discriminator = self.leakyRelu(discriminator)#layers.LeakyReLU(0.2)(discriminator)
+        discriminator = self.conv4(discriminator)
+        discriminator = self.batch_norm(discriminator)
+        discriminator = self.leakyRelu(discriminator)
     
-        discriminator = self.conv5(discriminator)#layers.Conv2D(filters=256, kernel_size=(3, 3), padding="same")(discriminator)
-        discriminator = self.batch_norm(discriminator)#layers.BatchNormalization(momentum=0.5)(discriminator)
-        discriminator = self.leakyRelu(discriminator)#layers.LeakyReLU(0.2)(discriminator)
+        discriminator = self.conv5(discriminator)
+        discriminator = self.batch_norm(discriminator)
+        discriminator = self.leakyRelu(discriminator)
     
-        discriminator = self.conv6(discriminator)#layers.Conv2D(filters=256, kernel_size=(3, 3), strides=(2, 2), padding="same")(discriminator)
-        discriminator = self.batch_norm(discriminator)#layers.BatchNormalization(momentum=0.5)(discriminator)
-        discriminator = self.leakyRelu(discriminator)#layers.LeakyReLU(0.2)(discriminator)
+        discriminator = self.conv6(discriminator)
+        discriminator = self.batch_norm(discriminator)
+        discriminator = self.leakyRelu(discriminator)
     
-        discriminator = self.conv7(discriminator)#layers.Conv2D(filters=512, kernel_size=(3, 3), padding="same")(discriminator)
-        discriminator = self.batch_norm(discriminator)#layers.BatchNormalization(momentum=0.5)(discriminator)
-        discriminator = self.leakyRelu(discriminator)#layers.LeakyReLU(0.2)(discriminator)
+        discriminator = self.conv7(discriminator)
+        discriminator = self.batch_norm(discriminator)
+        discriminator = self.leakyRelu(discriminator)
     
-        discriminator = self.flatten(discriminator)#layers.Flatten()(discriminator)
+        discriminator = self.flatten(discriminator)
     
-        discriminator = self.dense_out(discriminator)#layers.Dense(1024)(discriminator)
+        discriminator = self.dense_out(discriminator)
     
-        discriminator = self.leakyRelu(discriminator)#layers.LeakyReLU(0.2)(discriminator)
+        discriminator = self.leakyRelu(discriminator)
     
-        discriminator = self.final_dense(discriminator)#layers.Dense(1)(discriminator)
+        discriminator = self.final_dense(discriminator)
         
         return discriminator
     
@@ -168,53 +168,47 @@ class Generator(tf.keras.Model):
         
     
     def call(self,random_input,text_input1,training,mask):
-        #kernel_init = tf.random_normal_initializer(stddev=0.02)
-        # random_input = layers.Input(shape=(100,))
-        # text_input1 = layers.Input(shape=(300,))
         
         text_input1 = self.encoder(text_input1,training,mask)
         
         batch_size = text_input1.shape[0]
         #print('batch_size: ',batch_size)
         
-        text_layer1 = self.dense1(text_input1)#layers.Dense(8192)(text_input1)
-        text_layer1 = tf.reshape(text_layer1,(batch_size,8,8,128))#layers.Reshape((64,8, 8, 128))(text_layer1)
+        text_layer1 = self.dense1(text_input1)
+        text_layer1 = tf.reshape(text_layer1,(batch_size,8,8,128))
         #print('text1 shape after 1st dense:', text_layer1.shape)
-        gen_input_dense = self.dense2(random_input)#layers.Dense(n_nodes)(random_input)
+        gen_input_dense = self.dense2(random_input)
         #print('gen input shape:',gen_input_dense.shape)
-        generator = tf.reshape(gen_input_dense,(batch_size,8,8,128)) #layers.Reshape((8, 8, 128))(gen_input_dense)
+        generator = tf.reshape(gen_input_dense,(batch_size,8,8,128)) 
     
-        merge =  tf.concat([generator, text_layer1], axis=-1) #layers.Concatenate()([generator, text_layer1])
+        merge =  tf.concat([generator, text_layer1], axis=-1) 
     
-        model = self.conv1(merge)#layers.Conv2D(filters=64, kernel_size=9, strides=1, padding="same")(merge)
-        model = self.prelu(model)#PReLU(alpha_initializer='zeros', alpha_regularizer=None, alpha_constraint=None, shared_axes=[1, 2])(model)
+        model = self.conv1(merge)
+        model = self.prelu(model)
     
         gen_model = model
     
         for _ in range(4):
-          model = self.resnet(model)#resnet_block(model, 3, 64, 1)
+          model = self.resnet(model)
     
-        model = self.conv2(model)#layers.Conv2D(filters=64, kernel_size=3, strides=1, padding="same")(model)
-        model = self.batch_norm(model)#layers.BatchNormalization(momentum=0.5)(model)
-        model = self.add([gen_model, model])#layers.Add()([gen_model, model])
+        model = self.conv2(model)
+        model = self.batch_norm(model)
+        model = self.add([gen_model, model])
     
-        model = self.conv_tr1(model)#layers.Conv2DTranspose(filters=512, kernel_size=(3, 3), strides=(2, 2), padding="same", kernel_initializer=kernel_init)(model)
-        model = self.leakyRelu(model)#layers.LeakyReLU(0.2)(model)
+        model = self.conv_tr1(model)
+        model = self.leakyRelu(model)
     
-        model = self.conv_tr2(model)#layers.Conv2DTranspose(filters=256, kernel_size=(3, 3), strides=(2, 2), padding="same", kernel_initializer=kernel_init)(model)
-        model = self.leakyRelu(model)#layers.LeakyReLU(0.2)(model)
+        model = self.conv_tr2(model)
+        model = self.leakyRelu(model)
     
-        model = self.conv_tr3(model)#layers.Conv2DTranspose(filters=128, kernel_size=(3, 3), strides=(2, 2), padding="same", kernel_initializer=kernel_init)(model)
-        model = self.leakyRelu(model)#layers.LeakyReLU(0.2)(model)
+        model = self.conv_tr3(model)
+        model = self.leakyRelu(model)
     
-        model = self.conv_tr4(model)#layers.Conv2DTranspose(filters=64, kernel_size=(3, 3), strides=(1, 1), padding="same", kernel_initializer=kernel_init)(model)
-        model = self.leakyRelu(model)#layers.LeakyReLU(0.2)(model)
+        model = self.conv_tr4(model)
+        model = self.leakyRelu(model)
     
-        model = self.conv3(model)#layers.Conv2D(3, (3, 3), padding='same', activation='tanh')(model)
+        model = self.conv3(model)
     
-        # generator_model = Model(inputs=[random_input, text_input1], outputs=model)
-    
-        # generator_model.summary()
         return model
         
 
