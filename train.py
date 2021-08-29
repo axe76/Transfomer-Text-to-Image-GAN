@@ -11,7 +11,7 @@ import tensorflow as tf
 import numpy as np
 from numpy import expand_dims
 from transformer_layer import Encoder
-from model_transformer import Discriminator,Generator#define_discriminator
+from model_transformer import Discriminator,Generator
 from random import randint, choice
 import os
 import time
