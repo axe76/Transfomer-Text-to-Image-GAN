@@ -7,7 +7,7 @@ The architecture is based on a combination of GAN-CLS and MS-GAN referred from h
 
 The output of the transformer of the shape (batch size, seq_length, d_model) has been average pooled over the temporal dimension and has been concatenated to the inputs of both the Generator and Discriminator of the GAN. The architecture is modelled as shown below:
 
-![1_va0ul6e3xOAwlkxvWA3WoA](https://user-images.githubusercontent.com/36445587/139666692-0aee6e4d-6631-4fe0-a895-efbb61e95c29.png)
+![1_va0ul6e3xOAwlkxvWA3WoA](https://user-images.githubusercontent.com/36445587/139667752-0939ee78-4b21-4cf0-b011-e986b84d8ee3.png)
 
 # Usage
 Generate the text vectors:<br>
