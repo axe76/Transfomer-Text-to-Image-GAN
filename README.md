@@ -10,4 +10,17 @@ The output of the transformer of the shape (batch size, seq_length, d_model) has
 ![1_va0ul6e3xOAwlkxvWA3WoA](https://user-images.githubusercontent.com/36445587/139666692-0aee6e4d-6631-4fe0-a895-efbb61e95c29.png)
 
 # Usage
+Generate the text vectors:<br>
+```bash
+$ python3 gen_text_vectors.py
+```
 
+Generate the image vectors:<br>
+```bash
+$ python3 gen_image_vectors.py
+```
+
+Train the model:
+```bash
+$ python3 train.py
+```
